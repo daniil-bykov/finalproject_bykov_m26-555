@@ -133,7 +133,10 @@ class RateManager:
             return False
 
     def get_rate(self, from_code: str, to_code: str) -> float:
-        """Возвращает курс из кэша. Если кэша нет — кидает ошибку."""
+        """Возвращает курс из кэша (загружает актуальный файл)."""
+
+        self.rates = load_rates()
+        
         from_code = from_code.upper()
         to_code = to_code.upper()
         pairs = self.rates.get("pairs", {})

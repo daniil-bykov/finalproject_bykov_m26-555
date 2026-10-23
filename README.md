@@ -32,3 +32,7 @@ uv run wallet
 - `sell --currency <код> --amount <число>` — продать валюту.
 - `show-portfolio` — показать портфель.
 - `exit` — выйти.
+
+## Демонстрация работы
+
+[![asciicast](https://asciinema.org/a/AuMA24D6761r0qXY.svg)](https://asciinema.org/a/AuMA24D6761r0qXY)
