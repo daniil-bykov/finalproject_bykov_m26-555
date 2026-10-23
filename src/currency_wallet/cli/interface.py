@@ -1,7 +1,6 @@
 import shlex
 
-from currency_wallet.core.models import Portfolio
-from currency_wallet.core.usecases import PortfolioManager, UserManager
+from currency_wallet.core.usecases import PortfolioManager, RateManager, UserManager
 
 
 def print_help():
@@ -19,6 +18,7 @@ def print_help():
 def run_cli():
     """Запускает основной цикл CLI."""
     user_manager = UserManager()
+    rate_manager = RateManager()
     current_user = None
     portfolio_manager = None
 
@@ -59,24 +59,26 @@ def run_cli():
                     print("Сначала выполните login")
                     continue
                 
-                # Проверяем, передан ли аргумент --base
                 base = "USD"
                 if "--base" in args:
                     base = args[args.index("--base") + 1].upper()
                 
                 portfolio = portfolio_manager.get_portfolio()
                 print(f"Портфель пользователя '{current_user.username}' "
-                f"(база: {base}):")
+                      f"(база: {base}):")
                 
-                total = portfolio.get_total_value(base)
+                total = 0.0
                 for code, wallet in portfolio.wallets.items():
-                    # Считаем стоимость в базовой валюте
-                    if code in Portfolio.EXCHANGE_RATES:
-                        value = (wallet.balance * Portfolio.EXCHANGE_RATES[code] 
-                        / Portfolio.EXCHANGE_RATES[base])
+                    try:
+                        if code == base:
+                            value = wallet.balance
+                        else:
+                            rate = rate_manager.get_rate(code, base)
+                            value = wallet.balance * rate
                         print(f"- {code}: {wallet.balance:.4f} → {value:.2f} {base}")
-                    else:
-                        print(f"- {code}: {wallet.balance:.4f} (курс неизвестен)")
+                        total += value
+                    except Exception:
+                        print(f"- {code}: {wallet.balance:.4f} (курс недоступен)")
                 
                 print(f"{'-'*33}\nИТОГО: {total:.2f} {base}")
             
@@ -88,13 +90,12 @@ def run_cli():
                 currency = args[args.index("--currency") + 1].upper()
                 amount = float(args[args.index("--amount") + 1])
                 
-                # Получаем текущий курс (для вывода)
-                rate = Portfolio.EXCHANGE_RATES.get(currency)
-                if not rate:
-                    print(f"Не удалось получить курс для {currency}→USD")
+                try:
+                    rate = rate_manager.get_rate(currency, "USD")
+                except Exception as e:
+                    print(f"Ошибка: {e}")
                     continue
                 
-                # Выполняем покупку
                 wallet = portfolio_manager.buy_currency(currency, amount)
                 print(f"Покупка выполнена: {amount} {currency} "
                       f"по курсу {rate} USD/{currency}")
@@ -109,9 +110,10 @@ def run_cli():
                 currency = args[args.index("--currency") + 1].upper()
                 amount = float(args[args.index("--amount") + 1])
                 
-                rate = Portfolio.EXCHANGE_RATES.get(currency)
-                if not rate:
-                    print(f"Не удалось получить курс для {currency}→USD")
+                try:
+                    rate = rate_manager.get_rate(currency, "USD")
+                except Exception as e:
+                    print(f"Ошибка: {e}")
                     continue
                 
                 wallet = portfolio_manager.sell_currency(currency, amount)
@@ -119,23 +121,19 @@ def run_cli():
                       f"по курсу {rate} USD/{currency}")
                 print(f"Изменения в портфеле: - {currency}: стало {wallet.balance:.4f}")
                 print(f"Оценочная выручка: {amount * rate:.2f} USD")
-            
+         
             elif command == "get-rate":
                 from_currency = args[args.index("--from") + 1].upper()
                 to_currency = args[args.index("--to") + 1].upper()
                 
-                if (from_currency not in Portfolio.EXCHANGE_RATES 
-                    or to_currency not in Portfolio.EXCHANGE_RATES):
-                    print(f"Курс {from_currency}→{to_currency} недоступен")
-                    continue
-                
-                rate = (Portfolio.EXCHANGE_RATES[from_currency] 
-                        / Portfolio.EXCHANGE_RATES[to_currency])
-                reverse_rate = 1 / rate
-                
-                print(f"Курс {from_currency}→{to_currency}: {rate:.8f}")
-                print(f"Обратный курс {to_currency}→{from_currency}: "
-                      f"{reverse_rate:.2f}")
+                try:
+                    rate = rate_manager.get_rate(from_currency, to_currency)
+                    reverse_rate = 1 / rate
+                    print(f"Курс {from_currency}→{to_currency}: {rate:.8f}")
+                    print(f"Обратный курс {to_currency}→{from_currency}: "
+                          f"{reverse_rate:.2f}")
+                except Exception as e:
+                    print(f"Ошибка: {e}")
 
             elif command == "update-rates":
                 # update-rates --source coingecko

@@ -3,7 +3,7 @@ import os
 from datetime import datetime, timedelta
 
 from currency_wallet.core.exceptions import CurrencyNotFoundError
-from currency_wallet.core.utils import load_rates, save_rates
+from currency_wallet.core.utils import load_rates
 from currency_wallet.decorators import log_action
 from currency_wallet.infra.settings import SettingsLoader
 
@@ -123,30 +123,46 @@ class RateManager:
         self.rates = load_rates()
         self.settings = SettingsLoader()
 
+    def _is_fresh(self, updated_at_str: str) -> bool:
+        """Проверяет, не устарел ли курс (TTL)."""
+        try:
+            updated_at = datetime.fromisoformat(updated_at_str)
+            ttl = self.settings.get("rates_ttl_seconds", 300)
+            return datetime.now() - updated_at < timedelta(seconds=ttl)
+        except (ValueError, TypeError):
+            return False
+
     def get_rate(self, from_code: str, to_code: str) -> float:
-        """Возвращает курс. Если кеш устарел — обновляет (заглушка)."""
+        """Возвращает курс из кэша. Если кэша нет — кидает ошибку."""
         from_code = from_code.upper()
         to_code = to_code.upper()
-        
-        key = f"{from_code}_{to_code}"
-        if key in self.rates:
-            rate_data = self.rates[key]
-            updated_at = datetime.fromisoformat(rate_data["updated_at"])
-            ttl = self.settings.get("rates_ttl_seconds", 300)
-            if datetime.now() - updated_at < timedelta(seconds=ttl):
-                return rate_data["rate"]
+        pairs = self.rates.get("pairs", {})
 
-        if (from_code in Portfolio.EXCHANGE_RATES 
-            and to_code in Portfolio.EXCHANGE_RATES):
-            rate = (
-                Portfolio.EXCHANGE_RATES[from_code]
-                / Portfolio.EXCHANGE_RATES[to_code]
-            )
-            self.rates[key] = {
-                "rate": rate,
-                "updated_at": datetime.now().isoformat()
-            }
-            save_rates(self.rates)
-            return rate
-        else:
-            raise CurrencyNotFoundError(f"Курс {from_code}→{to_code} недоступен")
+        if from_code == to_code:
+            return 1.0
+
+        key = f"{from_code}_{to_code}"
+
+        # 1. Прямой курс
+        if key in pairs and self._is_fresh(pairs[key]["updated_at"]):
+            return pairs[key]["rate"]
+
+        # 2. Обратный курс
+        reverse_key = f"{to_code}_{from_code}"
+        if reverse_key in pairs and self._is_fresh(pairs[reverse_key]["updated_at"]):
+            return 1.0 / pairs[reverse_key]["rate"]
+
+        # 3. Кросс-курс через USD
+        if from_code != "USD" and to_code != "USD":
+            key_from_usd = f"{from_code}_USD"
+            key_to_usd = f"{to_code}_USD"
+            
+            if key_from_usd in pairs and key_to_usd in pairs:
+                rate_from = pairs[key_from_usd]["rate"]
+                rate_to = pairs[key_to_usd]["rate"]
+                return rate_from / rate_to
+
+        raise CurrencyNotFoundError(
+            f"Курс {from_code}→{to_code} недоступен. "
+            f"Выполните 'update-rates', чтобы загрузить данные."
+        )
