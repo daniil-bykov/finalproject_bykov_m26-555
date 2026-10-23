@@ -1,5 +1,6 @@
 import json
 import os
+import tempfile
 from datetime import datetime
 
 from .config import ParserConfig
@@ -9,6 +10,19 @@ class RatesStorage:
     def __init__(self):
         self.config = ParserConfig()
         os.makedirs("data", exist_ok=True)
+
+    def _atomic_write(self, filepath: str, data: dict):
+        """Атомарно записывает данные в JSON-файл (tmp -> rename)."""
+        # Создаем временный файл в той же директории
+        dir_name = os.path.dirname(filepath) or "."
+        with tempfile.NamedTemporaryFile(
+            "w", dir=dir_name, delete=False, encoding="utf-8"
+        ) as tmp_file:
+            json.dump(data, tmp_file, indent=4, ensure_ascii=False)
+            temp_path = tmp_file.name
+        
+        # Переименовываем (атомарная операция)
+        os.replace(temp_path, filepath)
 
     def save_rates(self, rates: dict, source: str):
         """Сохраняет текущие курсы в rates.json (снимок)."""
@@ -23,8 +37,7 @@ class RatesStorage:
                 "source": source
             }
         
-        with open(self.config.RATES_FILE_PATH, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=4, ensure_ascii=False)
+        self._atomic_write(self.config.RATES_FILE_PATH, data)
 
     def append_history(self, rates: dict, source: str):
         """Добавляет запись в исторический журнал exchange_rates.json."""
@@ -50,5 +63,4 @@ class RatesStorage:
             }
             history.append(record)
 
-        with open(self.config.HISTORY_FILE_PATH, "w", encoding="utf-8") as f:
-            json.dump(history, f, indent=4, ensure_ascii=False)
+        self._atomic_write(self.config.HISTORY_FILE_PATH, history)

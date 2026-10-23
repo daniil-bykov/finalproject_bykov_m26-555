@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import requests
 
-from currency_wallet.core.exceptions import ApiRequestError
+from valutatrade_hub.core.exceptions import ApiRequestError
 
 from .config import ParserConfig
 

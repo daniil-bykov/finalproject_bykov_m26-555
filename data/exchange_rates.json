@@ -376,5 +376,221 @@
         "timestamp": "2026-10-23T21:04:54.110833",
         "source": "ParserService",
         "meta": {}
+    },
+    {
+        "id": "BTC_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "BTC",
+        "to_currency": "USD",
+        "rate": 81531,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "ETH_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "ETH",
+        "to_currency": "USD",
+        "rate": 2405.55,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "SOL_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "SOL",
+        "to_currency": "USD",
+        "rate": 104.24,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "EUR_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "EUR",
+        "to_currency": "USD",
+        "rate": 0.8916,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "GBP_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "rate": 0.7467,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "RUB_USD_2026-10-23T21:22:42.872677",
+        "from_currency": "RUB",
+        "to_currency": "USD",
+        "rate": 81.5122,
+        "timestamp": "2026-10-23T21:22:42.872677",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "BTC_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "BTC",
+        "to_currency": "USD",
+        "rate": 81432,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "ETH_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "ETH",
+        "to_currency": "USD",
+        "rate": 2403.49,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "SOL_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "SOL",
+        "to_currency": "USD",
+        "rate": 104.14,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "EUR_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "EUR",
+        "to_currency": "USD",
+        "rate": 0.8916,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "GBP_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "rate": 0.7467,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "RUB_USD_2026-10-23T21:38:40.785957",
+        "from_currency": "RUB",
+        "to_currency": "USD",
+        "rate": 81.5122,
+        "timestamp": "2026-10-23T21:38:40.785957",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "BTC_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "BTC",
+        "to_currency": "USD",
+        "rate": 81432,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "ETH_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "ETH",
+        "to_currency": "USD",
+        "rate": 2403.49,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "SOL_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "SOL",
+        "to_currency": "USD",
+        "rate": 104.14,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "EUR_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "EUR",
+        "to_currency": "USD",
+        "rate": 0.8916,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "GBP_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "rate": 0.7467,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "RUB_USD_2026-10-23T21:39:19.463839",
+        "from_currency": "RUB",
+        "to_currency": "USD",
+        "rate": 81.5122,
+        "timestamp": "2026-10-23T21:39:19.463839",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "BTC_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "BTC",
+        "to_currency": "USD",
+        "rate": 81428,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "ETH_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "ETH",
+        "to_currency": "USD",
+        "rate": 2402.9,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "SOL_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "SOL",
+        "to_currency": "USD",
+        "rate": 104.1,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "EUR_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "EUR",
+        "to_currency": "USD",
+        "rate": 0.8916,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "GBP_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "GBP",
+        "to_currency": "USD",
+        "rate": 0.7467,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
+    },
+    {
+        "id": "RUB_USD_2026-10-23T21:41:07.751396",
+        "from_currency": "RUB",
+        "to_currency": "USD",
+        "rate": 81.5122,
+        "timestamp": "2026-10-23T21:41:07.751396",
+        "source": "ParserService",
+        "meta": {}
     }
 ]

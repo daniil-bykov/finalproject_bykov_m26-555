@@ -1,6 +1,6 @@
 import shlex
 
-from currency_wallet.core.usecases import PortfolioManager, RateManager, UserManager
+from valutatrade_hub.core.usecases import PortfolioManager, RateManager, UserManager
 
 
 def print_help():
@@ -23,7 +23,7 @@ def run_cli():
     current_user = None
     portfolio_manager = None
 
-    print("Добро пожаловать в Currency Wallet! Введите 'help' для списка команд.")
+    print("Добро пожаловать в ValutaTrade Hub! Введите 'help' для списка команд.")
 
     while True:
         try:
@@ -140,7 +140,7 @@ def run_cli():
                 # show-rates [--currency BTC] [--top 2] [--base USD]
                 import json
 
-                from currency_wallet.parser_service.config import ParserConfig
+                from valutatrade_hub.parser_service.config import ParserConfig
                 
                 config = ParserConfig()
                 try:
@@ -173,7 +173,7 @@ def run_cli():
 
             elif command == "update-rates":
                 # update-rates --source coingecko
-                from currency_wallet.parser_service.updater import RatesUpdater
+                from valutatrade_hub.parser_service.updater import RatesUpdater
                 
                 source = "all"
                 if "--source" in args:

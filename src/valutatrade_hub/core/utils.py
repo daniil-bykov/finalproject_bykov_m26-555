@@ -1,4 +1,4 @@
-from currency_wallet.infra.database import DatabaseManager
+from valutatrade_hub.infra.database import DatabaseManager
 
 
 def load_users():

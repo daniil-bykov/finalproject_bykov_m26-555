@@ -2,10 +2,10 @@ import hashlib
 import os
 from datetime import datetime, timedelta
 
-from currency_wallet.core.exceptions import CurrencyNotFoundError
-from currency_wallet.core.utils import load_rates
-from currency_wallet.decorators import log_action
-from currency_wallet.infra.settings import SettingsLoader
+from valutatrade_hub.core.exceptions import CurrencyNotFoundError
+from valutatrade_hub.core.utils import load_rates
+from valutatrade_hub.decorators import log_action
+from valutatrade_hub.infra.settings import SettingsLoader
 
 from .models import Portfolio, User, Wallet
 from .utils import load_portfolios, load_users, save_portfolios, save_users

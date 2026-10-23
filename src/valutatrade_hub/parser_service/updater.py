@@ -1,6 +1,6 @@
 import logging
 
-from currency_wallet.core.exceptions import ApiRequestError
+from valutatrade_hub.core.exceptions import ApiRequestError
 
 from .api_clients import CoinGeckoClient, ExchangeRateApiClient
 from .storage import RatesStorage

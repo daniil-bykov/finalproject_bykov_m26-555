@@ -1,5 +1,5 @@
 [project]
-name = "currency-wallet"
+name = "valutatrade_hub"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -15,7 +15,7 @@ dependencies = [
 ]
 
 [project.scripts]
-wallet = "currency_wallet.main:main"
+wallet = "valutatrade_hub.main:main"
 
 [build-system]
 requires = ["uv_build>=0.13.5,<0.14.0"]
@@ -34,3 +34,6 @@ exclude = ["venv", ".venv", "dist", "__pycache__"]
 [tool.ruff.lint]
 select = ["E", "F", "I"]
 ignore = []
+
+[tool.uv]
+package = true

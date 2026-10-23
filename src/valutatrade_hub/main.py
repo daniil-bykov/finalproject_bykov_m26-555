@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from currency_wallet.cli.interface import run_cli
-from currency_wallet.logging_config import setup_logging
+from valutatrade_hub.cli.interface import run_cli
+from valutatrade_hub.logging_config import setup_logging
 
 
 def main():

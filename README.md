@@ -1,4 +1,4 @@
-# Currency Wallet
+# ValutaTrade Hub
 
 Консольное приложение для симуляции торговли валютами с реальными курсами из интернета.
 
@@ -32,6 +32,23 @@ uv run wallet
 - `sell --currency <код> --amount <число>` — продать валюту.
 - `show-portfolio` — показать портфель.
 - `exit` — выйти.
+
+## Структура проекта
+
+- src/valutatrade_hub/core/ — бизнес-логика (модели, usecases, валюты).
+- src/valutatrade_hub/infra/ — инфраструктура (настройки, база данных).
+- src/valutatrade_hub/parser_service/ — сервис парсинга курсов из внешних API.
+- src/valutatrade_hub/cli/ — интерфейс командной строки.
+
+## Кэширование курсов (TTL)
+
+Курсы валют сохраняются в data/rates.json. У каждой пары есть поле updated_at. Если с момента обновления прошло больше RATES_TTL_SECONDS (по умолчанию 300 секунд), курс считается устаревшим, и программа предложит выполнить update-rates.
+
+## Как включить Parser Service
+
+Для обновления курсов из интернета выполните команду: update-rates.
+
+Она обратится к CoinGecko и ExchangeRate-API, сохранит данные в data/rates.json и добавит запись в историю data/exchange_rates.json.
 
 ## Демонстрация работы
 
