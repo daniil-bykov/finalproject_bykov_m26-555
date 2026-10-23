@@ -12,6 +12,7 @@ def print_help():
     print("  buy --currency <код> --amount <число>")
     print("  sell --currency <код> --amount <число>")
     print("  get-rate --from <код> --to <код>")
+    print("  update-rates [--source coingecko|exchangerate]")
     print("  exit")
 
 
@@ -135,6 +136,21 @@ def run_cli():
                 print(f"Курс {from_currency}→{to_currency}: {rate:.8f}")
                 print(f"Обратный курс {to_currency}→{from_currency}: "
                       f"{reverse_rate:.2f}")
+
+            elif command == "update-rates":
+                # update-rates --source coingecko
+                from currency_wallet.parser_service.updater import RatesUpdater
+                
+                source = "all"
+                if "--source" in args:
+                    source = args[args.index("--source") + 1]
+                
+                try:
+                    updater = RatesUpdater()
+                    updater.run_update(source=source)
+                    print("Курсы успешно обновлены.")
+                except Exception as e:
+                    print(f"Ошибка при обновлении курсов: {e}")
             
             else:
                 print(f"Неизвестная команда: {command}. Введите 'help' для справки.")
