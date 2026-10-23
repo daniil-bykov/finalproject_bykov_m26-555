@@ -1,6 +1,10 @@
 [
     {
         "user_id": 1,
-        "wallets": {}
+        "wallets": {
+            "BTC": {
+                "balance": 0.030000000000000002
+            }
+        }
     }
 ]
