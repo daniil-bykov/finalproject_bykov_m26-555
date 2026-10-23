@@ -1,8 +1,11 @@
 import hashlib
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from currency_wallet.core.exceptions import CurrencyNotFoundError
+from currency_wallet.core.utils import load_rates, save_rates
 from currency_wallet.decorators import log_action
+from currency_wallet.infra.settings import SettingsLoader
 
 from .models import Portfolio, User, Wallet
 from .utils import load_portfolios, load_users, save_portfolios, save_users
@@ -113,3 +116,37 @@ class PortfolioManager:
         wallet.withdraw(amount)
         self.save(portfolio)
         return wallet
+
+
+class RateManager:
+    def __init__(self):
+        self.rates = load_rates()
+        self.settings = SettingsLoader()
+
+    def get_rate(self, from_code: str, to_code: str) -> float:
+        """Возвращает курс. Если кеш устарел — обновляет (заглушка)."""
+        from_code = from_code.upper()
+        to_code = to_code.upper()
+        
+        key = f"{from_code}_{to_code}"
+        if key in self.rates:
+            rate_data = self.rates[key]
+            updated_at = datetime.fromisoformat(rate_data["updated_at"])
+            ttl = self.settings.get("rates_ttl_seconds", 300)
+            if datetime.now() - updated_at < timedelta(seconds=ttl):
+                return rate_data["rate"]
+
+        if (from_code in Portfolio.EXCHANGE_RATES 
+            and to_code in Portfolio.EXCHANGE_RATES):
+            rate = (
+                Portfolio.EXCHANGE_RATES[from_code]
+                / Portfolio.EXCHANGE_RATES[to_code]
+            )
+            self.rates[key] = {
+                "rate": rate,
+                "updated_at": datetime.now().isoformat()
+            }
+            save_rates(self.rates)
+            return rate
+        else:
+            raise CurrencyNotFoundError(f"Курс {from_code}→{to_code} недоступен")

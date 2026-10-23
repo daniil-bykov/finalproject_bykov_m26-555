@@ -3,7 +3,6 @@ from abc import ABC, abstractmethod
 
 class Currency(ABC):
     """Абстрактный базовый класс для всех валют."""
-
     def __init__(self, name: str, code: str):
         if not name or not isinstance(name, str):
             raise ValueError("Имя валюты не может быть пустым")
@@ -24,19 +23,21 @@ class Currency(ABC):
 class FiatCurrency(Currency):
     def __init__(self, name: str, code: str, issuing_country: str):
         super().__init__(name, code)
-        self.issuing_country = issuing_country
+        self.issuing_country = issuing_country # Доп. атрибут
 
     def get_display_info(self) -> str:
+        # Формат: "[FIAT] USD — US Dollar (Issuing: United States)"
         return f"[FIAT] {self.code} — {self.name} (Issuing: {self.issuing_country})"
 
 
 class CryptoCurrency(Currency):
     def __init__(self, name: str, code: str, algorithm: str, market_cap: float):
         super().__init__(name, code)
-        self.algorithm = algorithm
-        self.market_cap = market_cap
+        self.algorithm = algorithm # Доп. атрибут
+        self.market_cap = market_cap # Доп. атрибут
 
     def get_display_info(self) -> str:
+        # Формат: "[CRYPTO] BTC — Bitcoin (Algo: SHA-256, MCAP: 1.12e12)"
         return (
                 f"[CRYPTO] {self.code} — {self.name} "
                 f"(Algo: {self.algorithm}, MCAP: {self.market_cap:.2e})"

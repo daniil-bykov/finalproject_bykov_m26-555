@@ -2,6 +2,10 @@ class SettingsLoader:
     """Singleton для загрузки настроек."""
     _instance = None
 
+    # Используем __new__ для реализации Singleton, потому что это самый простой
+    # и читаемый способ в Python. Метаклассы дают больше гибкости, но здесь
+    # они избыточны. __new__ гарантирует, что при любом импорте и вызове
+    # SettingsLoader() будет возвращаться один и тот же объект.
     def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
