@@ -2,6 +2,9 @@ import hashlib
 import os
 from datetime import datetime
 
+from .currencies import get_currency
+from .exceptions import InsufficientFundsError
+
 
 class User:
     def __init__(self, user_id: int, username: str, hashed_password: str,
@@ -80,14 +83,10 @@ class Wallet:
         self.balance += amount
 
     def withdraw(self, amount: float):
-        """Снятие средств (если баланс позволяет)."""
         if not isinstance(amount, (int, float)) or amount <= 0:
             raise ValueError("Сумма снятия должна быть положительным числом")
         if amount > self._balance:
-            raise ValueError(
-            f"Недостаточно средств: доступно {self._balance}, "
-            f"требуется {amount}"
-            )
+            raise InsufficientFundsError(self._balance, self.currency_code, amount)
         self.balance -= amount
 
     def get_balance_info(self):
@@ -133,15 +132,13 @@ class Portfolio:
         return self._wallets[currency_code]
 
     def get_total_value(self, base_currency: str = "USD") -> float:
-        """Считает общую стоимость всех валют в указанной базовой валюте."""
         base_currency = base_currency.upper()
-        if base_currency not in self.EXCHANGE_RATES:
-            raise ValueError(f"Неизвестная базовая валюта: {base_currency}")
-        
+        # Проверяем, что базовая валюта существует
+        get_currency(base_currency) 
+    
         total = 0.0
         for code, wallet in self._wallets.items():
             if code in self.EXCHANGE_RATES:
-                # Переводим в USD, а потом в базовую
                 value_in_usd = wallet.balance * self.EXCHANGE_RATES[code]
                 total += value_in_usd / self.EXCHANGE_RATES[base_currency]
         return total
