@@ -22,11 +22,13 @@ uv sync
 uv run wallet
 
 ## Основные команды
-- register --username <имя> --password <пароль> — зарегистрироваться.
-- login --username <имя> --password <пароль> — войти.
-- update-rates — обновить курсы из внешних API.
-- get-rate --from <код> --to <код> — узнать курс.
-- buy --currency <код> --amount <число> — купить валюту.
-- sell --currency <код> --amount <число> — продать валюту.
-- show-portfolio — показать портфель.
-- exit — выйти.
+
+- `register --username <имя> --password <пароль>` — зарегистрироваться.
+- `login --username <имя> --password <пароль>` — войти.
+- `update-rates` — обновить курсы из внешних API.
+- `show-rates [--currency <код>] [--top <N>]` — показать актуальные курсы из кэша.
+- `get-rate --from <код> --to <код>` — узнать курс.
+- `buy --currency <код> --amount <число>` — купить валюту.
+- `sell --currency <код> --amount <число>` — продать валюту.
+- `show-portfolio` — показать портфель.
+- `exit` — выйти.

@@ -11,6 +11,7 @@ def print_help():
     print("  buy --currency <код> --amount <число>")
     print("  sell --currency <код> --amount <число>")
     print("  get-rate --from <код> --to <код>")
+    print("  show-rates [--currency <код>] [--top <N>]")
     print("  update-rates [--source coingecko|exchangerate]")
     print("  exit")
 
@@ -134,6 +135,41 @@ def run_cli():
                           f"{reverse_rate:.2f}")
                 except Exception as e:
                     print(f"Ошибка: {e}")
+
+            elif command == "show-rates":
+                # show-rates [--currency BTC] [--top 2] [--base USD]
+                import json
+
+                from currency_wallet.parser_service.config import ParserConfig
+                
+                config = ParserConfig()
+                try:
+                    with open(config.RATES_FILE_PATH, "r", encoding="utf-8") as f:
+                        data = json.load(f)
+                except FileNotFoundError:
+                    print("Локальный кеш курсов пуст. Выполните 'update-rates'.")
+                    continue
+                
+                pairs = data.get("pairs", {})
+                last_refresh = data.get("last_refresh", "неизвестно")
+                
+                # Фильтр по валюте
+                if "--currency" in args:
+                    cur = args[args.index("--currency") + 1].upper()
+                    filtered = {k: v for k, v in pairs.items() if cur in k}
+                else:
+                    filtered = pairs
+                
+                # Сортировка по значению для --top
+                items = list(filtered.items())
+                if "--top" in args:
+                    n = int(args[args.index("--top") + 1])
+                    items.sort(key=lambda x: x[1]["rate"], reverse=True)
+                    items = items[:n]
+                
+                print(f"Rates from cache (updated at {last_refresh}):")
+                for pair, info in items:
+                    print(f"- {pair}: {info['rate']}")
 
             elif command == "update-rates":
                 # update-rates --source coingecko
