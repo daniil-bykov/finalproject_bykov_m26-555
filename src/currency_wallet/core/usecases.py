@@ -2,6 +2,8 @@ import hashlib
 import os
 from datetime import datetime
 
+from currency_wallet.decorators import log_action
+
 from .models import Portfolio, User, Wallet
 from .utils import load_portfolios, load_users, save_portfolios, save_users
 
@@ -94,6 +96,7 @@ class PortfolioManager:
         }
         save_portfolios(self.portfolios)
 
+    @log_action("BUY")
     def buy_currency(self, currency_code, amount):
         portfolio = self.get_portfolio()
         if currency_code not in portfolio.wallets:
@@ -103,6 +106,7 @@ class PortfolioManager:
         self.save(portfolio)
         return wallet
 
+    @log_action("SELL")
     def sell_currency(self, currency_code, amount):
         portfolio = self.get_portfolio()
         wallet = portfolio.get_wallet(currency_code)
