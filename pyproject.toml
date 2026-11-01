@@ -1,7 +1,7 @@
 [project]
 name = "valutatrade_hub"
 version = "0.1.0"
-description = "Add your description here"
+description = "Консольный кошелёк для симуляции торговли валютами с курсами из внешних API"
 readme = "README.md"
 authors = [
     { name = "Daniil Bykov", email = "bykov.commerce@gmail.com" }
@@ -15,11 +15,11 @@ dependencies = [
 ]
 
 [project.scripts]
-wallet = "valutatrade_hub.main:main"
+wallet = "main:main"
 
 [build-system]
-requires = ["uv_build>=0.13.5,<0.14.0"]
-build-backend = "uv_build"
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
 
 [dependency-groups]
 dev = [
@@ -37,3 +37,20 @@ ignore = []
 
 [tool.uv]
 package = true
+
+[tool.valutatrade]
+data_dir = "data"
+rates_ttl_seconds = 3900
+rates_update_interval_seconds = 3600
+base_currency = "USD"
+log_file = "logs/actions.log"
+log_level = "INFO"
+log_max_bytes = 1048576
+log_backup_count = 3
+
+[tool.setuptools]
+py-modules = ["main"]
+
+[tool.setuptools.packages.find]
+include = ["valutatrade_hub*"]
+namespaces = false

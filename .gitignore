@@ -1,6 +1,15 @@
 .venv
+.vscode/
+tests/
+logs/
 dist/
+build/
 __pycache__/
+*.py[cod]
+.ruff_cache/
+.pytest_cache/
 *.egg-info
 wallet_data.json
 .env
+data/exchange_rates.backup-*.json
+data/.storage.lock
